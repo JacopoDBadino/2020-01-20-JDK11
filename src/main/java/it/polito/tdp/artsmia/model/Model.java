@@ -17,6 +17,10 @@ public class Model {
 	ArtsmiaDAO dao;
 	SimpleWeightedGraph<Artists, DefaultWeightedEdge> graph;
 	Map<Integer, Artists> databaseArtisti;
+	int bstSize;
+
+	List<Artists> soluzione;
+	List<Artists> parziale;
 
 	public Model() {
 		dao = new ArtsmiaDAO();
@@ -67,5 +71,42 @@ public class Model {
 		return databaseArtisti;
 	}
 
+	public List<Artists> calcolaPercorso(Artists source) {
+		parziale = new ArrayList<Artists>();
+		soluzione = new ArrayList<Artists>();
+		bstSize = 0;
+
+		parziale.add(source);
+
+		ricorsione(parziale, 0.0);
+
+		return soluzione;
+	}
+
+	public void ricorsione(List<Artists> parz, double peso) {
+
+		if (parz.size() > bstSize)
+			soluzione = new ArrayList<Artists>();
+
+		double pesoAtt;
+		Artists sourceAtt = parz.get(parz.size() - 1);
+
+		for (Artists a : Graphs.neighborListOf(graph, sourceAtt)) {
+
+			pesoAtt = peso;
+
+			if (parziale.size() == 1)
+				pesoAtt = this.graph.getEdgeWeight(this.graph.getEdge(sourceAtt, a));
+
+			if (this.graph.getEdgeWeight(this.graph.getEdge(a, sourceAtt)) == pesoAtt) {
+				parziale.add(a);
+				ricorsione(parziale, pesoAtt);
+				parziale.remove(parziale.size() - 1);
+			}
+		}
+
+	}
+
 	
+
 }

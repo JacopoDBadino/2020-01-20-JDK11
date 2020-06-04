@@ -3,6 +3,8 @@ package it.polito.tdp.artsmia;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.artsmia.model.Artists;
+import it.polito.tdp.artsmia.model.CoppieArtisti;
 import it.polito.tdp.artsmia.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.Box;
 
 public class ArtsmiaController {
 
@@ -42,13 +45,29 @@ public class ArtsmiaController {
 	@FXML
 	void doArtistiConnessi(ActionEvent event) {
 		txtResult.clear();
-		txtResult.appendText("Calcola artisti connessi");
+		txtResult.appendText("Artisti connessi: \n");
+		try {
+			for (CoppieArtisti ca : model.artistiConnessi(boxRuolo.getValue()))
+				txtResult.appendText(String.format("\n(%d, %d) - %d", ca.getIdArtista1(), ca.getIdArtista2(), ca.getNumeroOpere()));
+		} catch (Exception e) {
+			txtResult.appendText("ERRORE RICERCA ARTISTI CONNESSI!");
+		}
 	}
 
 	@FXML
 	void doCalcolaPercorso(ActionEvent event) {
 		txtResult.clear();
-		txtResult.appendText("Calcola percorso");
+		txtResult.appendText("Calcolo percorso: ");
+		try {
+			
+			Artists source = model.getDatabaseArtisti().get(Integer.parseInt(txtArtista.getText()));
+			
+			for (Artists a : model.calcolaPercorso(source))
+				txtResult.appendText(String.format("Artista %s", a.getNome()));
+			
+		} catch (Exception e) {
+			txtResult.appendText("ERRORE CALCOLO PERCORSO!");
+		}
 	}
 
 	@FXML

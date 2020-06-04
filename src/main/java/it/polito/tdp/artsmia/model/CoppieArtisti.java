@@ -28,6 +28,6 @@ public class CoppieArtisti implements Comparable<CoppieArtisti> {
 	@Override
 	public int compareTo(CoppieArtisti o) {
 		// TODO Auto-generated method stub
-		return this.numeroOpere - o.getNumeroOpere();
+		return -(this.numeroOpere - o.getNumeroOpere());
 	}
 }
