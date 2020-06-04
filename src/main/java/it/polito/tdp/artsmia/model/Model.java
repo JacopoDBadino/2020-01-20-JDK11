@@ -34,7 +34,8 @@ public class Model {
 		for (Artists a : dao.listArtistForRole(role))
 			databaseArtisti.put(a.getId(), a);
 
-		Graphs.addAllVertices(graph, dao.listArtistForRole(role));
+		for (Artists a : dao.listArtistForRole(role))
+			this.graph.addVertex(databaseArtisti.get(a.getId()));
 
 		for (CoppieArtisti ca : dao.getArchi(role)) {
 
@@ -58,4 +59,13 @@ public class Model {
 		return result;
 	}
 
+	public SimpleWeightedGraph<Artists, DefaultWeightedEdge> getGraph() {
+		return graph;
+	}
+
+	public Map<Integer, Artists> getDatabaseArtisti() {
+		return databaseArtisti;
+	}
+
+	
 }

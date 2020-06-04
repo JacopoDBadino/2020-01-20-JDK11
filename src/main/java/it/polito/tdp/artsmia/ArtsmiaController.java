@@ -54,7 +54,14 @@ public class ArtsmiaController {
 	@FXML
 	void doCreaGrafo(ActionEvent event) {
 		txtResult.clear();
-		txtResult.appendText("Crea grafo");
+		try {
+			txtResult.appendText("Grafo creato: ");
+			model.creaGrafo(boxRuolo.getValue());
+			txtResult.appendText("\n\nVertici: #" + model.getGraph().vertexSet().size());
+			txtResult.appendText("\nArchi: #" + model.getGraph().edgeSet().size());
+		} catch (Exception e) {
+			txtResult.appendText("ERRORE CREAZIONE GRAFO!");
+		}
 	}
 
 	public void setModel(Model model) {
